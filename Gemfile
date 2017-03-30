@@ -25,6 +25,17 @@ gem 'phantomjs', '2.1.1.0', require: false
 gem 'poltergeist', require: false
 gem 'capybara', require: false
 
+gem 'devise'
+gem 'omniauth'
+
+gem 'omniauth-facebook'
+gem "koala", "~> 3.0.0"
+
+gem 'envyable'
+
+# gem 'omniauth-twitter'
+# gem 'twitter'
+
 group :development do
   gem "listen"
   gem "spring"

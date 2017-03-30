@@ -11,3 +11,6 @@
 /public/assets
 /tags
 /tmp/*
+
+# Don't check in credentials 
+config/env.yml

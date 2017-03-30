@@ -1,0 +1,15 @@
+default: &default
+  key: <%= ENV["FACEBOOK_API_KEY"] %>
+  secret: <%= ENV["FACEBOOK_API_SECRET"] %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default
