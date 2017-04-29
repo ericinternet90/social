@@ -1,0 +1,14 @@
+<h1> Dashboard </h1>
+
+<% query_string = {
+  client_id: Config4::Facebook.id,
+  redirect_uri: facebook_token_redirect_url,
+  app_id: Config4::Facebook.id,
+  scope: FacebookToken::SCOPE
+}.to_query %>
+
+<% connect_url = "https://www.facebook.com/v2.8/dialog/oauth?#{query_string}" %>
+
+<a href=<%= connect_url %> \>
+  Connect
+</a>

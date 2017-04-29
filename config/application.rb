@@ -23,5 +23,7 @@ module Social
     end
     config.action_controller.action_on_unpermitted_parameters = :raise
     config.active_job.queue_adapter = :delayed_job
+
+    Koala.config.api_version = 'v2.8'
   end
 end

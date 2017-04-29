@@ -1,54 +1,39 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default("0"), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :inet
+#  last_sign_in_ip        :inet
+#  confirmation_token     :string
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
-  # :lockable, and :timeoutable
+  # :lockable, :timeoutable, and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :confirmable
+         :confirmable
 
-  devise :omniauthable, omniauth_providers: [:facebook]
-
-  has_many :identities
-
-  TEMP_EMAIL_PREFIX = 'change@me'
-  TEMP_EMAIL_REGEX = /\Achange@me/
-
-  def self.find_or_create_by_oauth(auth, signed_in_resource = nil)
-    identity = Identity.find_or_initialize_by_oauth(auth)
-
-    # If a signed_in_resource is provided it always overrides the existing user
-    # to prevent the identity being locked with accidentally created accounts.
-    # Note that this may leave zombie accounts (with no associated identity) which
-    # can be cleaned up at a later date.
-    user = signed_in_resource ? signed_in_resource : identity.user
-
-    if user.nil?
-      email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
-      email = auth.info.email if email_is_verified
-
-      if email_is_verified && User.exists?(email: email)
-        user = User.find_by(email: email)
-      elsif User.exists?(email: identity.temp_user_email)
-        user = User.find_by(email: identity.temp_user_email)
-      else
-        user = User.new(
-          # name: auth.extra.raw_info.name,
-          # username: auth.info.nickname || auth.uid,
-          email: email ? email : identity.temp_user_email,
-          password: Devise.friendly_token[0,20]
-        )
-        user.skip_confirmation!
-        user.save!
-      end
-    end
-
-    identity.set_user!(user) if identity.user != user
-
-    user
-  end
-
-
-  def email_verified?
-    self.email && !self.email.empty? && self.email !~ TEMP_EMAIL_REGEX
-  end
+  has_many :facebook_tokens
 
 end
