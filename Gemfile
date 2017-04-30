@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "2.4.0"
 
 gem "autoprefixer-rails"
-gem "delayed_job_active_record"
+gem 'sucker_punch', '~> 2.0'
 gem "flutie"
 gem "honeybadger"
 gem "jquery-rails"
@@ -21,9 +21,12 @@ gem "suspenders"
 gem "title"
 gem "uglifier"
 
+gem 'react-rails'
 gem 'phantomjs', '2.1.1.0', require: false
 gem 'poltergeist', require: false
 gem 'capybara', require: false
+
+gem 'httparty'
 
 gem 'devise'
 gem 'omniauth'
@@ -31,6 +34,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem "koala", "~> 3.0.0"
 
+gem 'annotate'
 gem 'envyable'
 
 # gem 'omniauth-twitter'
