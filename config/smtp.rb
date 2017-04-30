@@ -5,7 +5,7 @@ SMTP_SETTINGS = {
   enable_starttls_auto: true,
   password: ENV.fetch("MAILGUN_SMTP_PASSWORD"),
   port: "587",
-  user_name: ENV.fetch("MAILGUN_SMTP_USERNAME")
+  user_name: ENV.fetch("MAILGUN_SMTP_LOGIN")
 }
 
 if ENV["EMAIL_RECIPIENTS"].present?
