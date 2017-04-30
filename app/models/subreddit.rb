@@ -13,6 +13,9 @@
 #
 
 class Subreddit < ApplicationRecord
+  has_many :fp_subreddits
+  has_many :facebook_pages, through: :fp_subreddits
+
   validates_presence_of :name
 
   def url

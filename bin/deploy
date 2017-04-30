@@ -4,9 +4,9 @@
 
 set -e
 
-branch="$(git symbolic-ref HEAD --short)"
 target="${1:-staging}"
+git checkout "$target"
 
-git push "$target" "$branch:master"
+git push "$target" "$target:master"
 heroku run rake db:migrate --exit-code --remote "$target"
 heroku restart --remote "$target"

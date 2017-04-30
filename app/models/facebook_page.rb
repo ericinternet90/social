@@ -17,6 +17,8 @@
 
 class FacebookPage < ApplicationRecord
   belongs_to :user
+  has_many :fp_subreddits
+  has_many :subreddits, through: :fp_subreddits
 
   def token
     @token ||= user.facebook_tokens.last
@@ -43,5 +45,4 @@ class FacebookPage < ApplicationRecord
   def access_token
     @access_token ||= token.graph.get_page_access_token(facebook_page_id)
   end
-
 end
