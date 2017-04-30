@@ -4,12 +4,13 @@ class RedditPost
     'i.imgur.com',
     'imgur.com',
     'i.redd.it',
-    'gfycat.com'
+    'gfycat.com',
+    'pixel.redditmedia.com'
   ]
 
   attr_accessor :text, :link, :rank
   validates_presence_of :text, :link
-  validates_inclusion_of :rank, in: 1..5
+  validates_inclusion_of :rank, in: 1..25
 
   validate do |reddit_post|
     unless reddit_post.whitelisted_link?
@@ -24,4 +25,5 @@ class RedditPost
   def uri
     URI.parse(link)
   end
+
 end

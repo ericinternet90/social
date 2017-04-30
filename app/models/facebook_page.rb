@@ -5,8 +5,8 @@
 #  id               :integer          not null, primary key
 #  user_id          :integer
 #  facebook_page_id :string(256)      not null
-#  name             :string(128)      not null
-#  category         :string(128)      not null
+#  name             :string(256)      not null
+#  enabled          :boolean          default("true")
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -20,12 +20,13 @@ class FacebookPage < ApplicationRecord
 
   def token
     @token ||= user.facebook_tokens.last
+    raise "Nonexistent token for faceboook_page #{id}" unless @token
+    raise "Expired token for faceboook_page #{id}" if @token.expired?
+    @token
   end
 
   def graph
-    raise "Nonexistent token for faceboook_page #{id}" unless token
-    raise "Expired token for faceboook_page #{id}" if token.expired?
-    @graph ||= token.graph
+    @graph ||= Koala::Facebook::API.new(access_token)
   end
 
   def likes
@@ -37,6 +38,10 @@ class FacebookPage < ApplicationRecord
 
   def url
     'https://facebook.com/' + facebook_page_id
+  end
+
+  def access_token
+    @access_token ||= token.graph.get_page_access_token(facebook_page_id)
   end
 
 end

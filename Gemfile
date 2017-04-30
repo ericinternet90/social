@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "2.4.0"
 
 gem "autoprefixer-rails"
-gem "delayed_job_active_record"
+gem 'sucker_punch', '~> 2.0'
 gem "flutie"
 gem "honeybadger"
 gem "jquery-rails"

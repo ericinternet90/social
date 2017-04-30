@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330035458) do
+ActiveRecord::Schema.define(version: 20170330035459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "facebook_pages", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "facebook_page_id", limit: 256, null: false
-    t.string   "name",             limit: 128, null: false
-    t.string   "category",         limit: 128, null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.string   "facebook_page_id", limit: 256,                null: false
+    t.string   "name",             limit: 256,                null: false
+    t.boolean  "enabled",                      default: true
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.index ["user_id"], name: "index_facebook_pages_on_user_id", using: :btree
   end
 
@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(version: 20170330035458) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.index ["user_id"], name: "index_facebook_tokens_on_user_id", using: :btree
+  end
+
+  create_table "subreddits", force: :cascade do |t|
+    t.string   "name",       limit: 128, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["name"], name: "index_subreddits_on_name", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|

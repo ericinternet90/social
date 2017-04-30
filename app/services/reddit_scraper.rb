@@ -3,7 +3,7 @@ class RedditScraper < Scraper
   def initialize(options)
     setup_capybara
     @posts = []
-    @sub = options[:sub] || 'GifRecipes'
+    @subreddit = options.fetch(:subreddit)
     setup_page
   end
 
@@ -15,7 +15,7 @@ class RedditScraper < Scraper
 private
 
   def setup_page
-    @browser.visit("https://www.reddit.com/r/#{@sub}/")
+    @browser.visit(@subreddit.url)
     wait_for_ajax
   end
 
@@ -43,35 +43,6 @@ private
   def titles
     xpath = "//p[@class='title']//p//a"
     @browser.all(:xpath, xpath)#.map(&:text)
-  end
-
-  def find_or_create_venues
-    setup_page
-    xpath = "//li[@class='flex-active-slide']//p//a"
-    venue_names = @browser.all(:xpath, xpath).map(&:text) # todo filter/admin to exclude links to artists, etc-
-    existing_venues = Venue.where(name: venue_names)
-    @venues += existing_venues
-    venue_names -= existing_venues.map(&:name)
-    venue_names.each { |name| @venues << Venue.find_or_create_by(name: name) }
-  end
-
-  def find_or_create_events
-    setup_page
-    xpath = "//li[@class='flex-active-slide']//p"
-    paragraphs = @browser.all(:xpath, xpath).map(&:text)
-    paragraphs.each { |paragraph| create_event_maybe(paragraph) }
-  end
-
-  def create_event_maybe(paragraph)
-    Venue.open_pluck(:id, :name).each do |venue|
-      if Regexp.new(venue.name).match(paragraph)
-        @events << Event.find_or_create_by(
-          venue_id: venue.id,
-          description: paragraph,
-          date: @date
-        )
-      end
-    end
   end
 
 end

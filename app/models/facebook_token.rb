@@ -23,7 +23,7 @@ class FacebookToken < ApplicationRecord
   belongs_to :user
 
   def graph
-    @graph ||= Koala::Facebook::API.new(access_token, Config4::Facebook.secret)
+    @graph ||= Koala::Facebook::API.new(access_token)
   end
 
   def pages

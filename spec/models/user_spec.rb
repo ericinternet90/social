@@ -34,6 +34,7 @@ RSpec.describe User, type: :model do
 
   describe "associations" do
     it { should have_many(:facebook_tokens) }
+    it { should have_many(:facebook_pages) }
   end
 
 end

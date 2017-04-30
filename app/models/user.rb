@@ -35,5 +35,5 @@ class User < ApplicationRecord
          :confirmable
 
   has_many :facebook_tokens
-
+  has_many :facebook_pages
 end
